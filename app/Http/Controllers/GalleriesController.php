@@ -13,6 +13,7 @@ class GalleriesController extends Controller
     public function __construct(GalleryService $galleryService)
     {
         $this->galleryService = $galleryService;
+        $this->middleware('auth:api')->only(['store', 'update', 'destroy']);
     }
 
 

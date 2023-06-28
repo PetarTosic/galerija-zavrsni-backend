@@ -21,14 +21,14 @@ class GalleryService
         $request->validate([
             'name' => 'required|min:2|max:255|string',
             'description' => 'max:1000',
-            'urls' => 'required',
+            'urls' => 'required|array',
         ]);
 
         $gallery = new Gallery();
 
         $gallery->name = $request->name;
         $gallery->description = $request->description;
-        $gallery->urls = $request->urls;
+        $gallery->urls = implode(',', $request->urls);
         $gallery->author_id = $request->author_id;
 
         $gallery->save();
