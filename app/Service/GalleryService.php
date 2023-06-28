@@ -11,7 +11,7 @@ class GalleryService
 
     public function showGalleries(Request $request)
     {
-        $galleries = Gallery::paginate(10);
+        $galleries = Gallery::with('user')->paginate(10);
 
         return $galleries;
     }
@@ -29,7 +29,7 @@ class GalleryService
         $gallery->name = $request->name;
         $gallery->description = $request->description;
         $gallery->urls = implode(',', $request->urls);
-        $gallery->author_id = $request->author_id;
+        $gallery->user_id = $request->user_id;
 
         $gallery->save();
 
@@ -38,7 +38,7 @@ class GalleryService
 
     public function showGallery($id)
     {
-        $gallery = Gallery::find($id);
+        $gallery = Gallery::with('user')->find($id);
         return $gallery;
     }
 
