@@ -12,7 +12,44 @@ class AuthController extends Controller
 
     public function __construct()
     {
-        $this->middleware('auth:api', ['except' => ['login', 'register']]);
+        $this->middleware('auth:api', ['except' => ['login', 'register', 'getAllUsers', 'getUserById', 'getUserGalleries']]);
+    }
+
+    public function getAllUsers()
+    {
+        $users = User::with('gallery')->get();
+
+        return response()->json([
+            'status' => 'success',
+            'users' => $users,
+        ]);
+    }
+
+    public function getUserById($id)
+    {
+        $user = User::with('gallery')->find($id);
+        return response()->json([
+            'user' => $user,
+        ]);
+    }
+
+    public function getUserGalleries($userId)
+    {
+        $user = User::with('gallery')->find($userId);
+
+        if (!$user) {
+            return response()->json([
+                'status' => 'error',
+                'message' => 'User not found.',
+            ], 404);
+        }
+
+        $galleries = $user->gallery;
+
+        return response()->json([
+            'status' => 'success',
+            'galleries' => $galleries,
+        ]);
     }
 
     public function login(Request $request)

@@ -25,6 +25,9 @@ Route::controller(AuthController::class)->group(function () {
     Route::post('register', 'register');
     Route::post('logout', 'logout');
     Route::post('refresh', 'refresh');
+    Route::get('users', 'getAllUsers');
+    Route::get('users/{userId}/galleries', 'getUserGalleries');
+    Route::get('users/{id}', 'getUserById');
 });
 
 Route::get('/galleries', [GalleriesController::class, 'index']);
