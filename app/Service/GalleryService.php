@@ -2,6 +2,7 @@
 
 namespace App\Service;
 
+use App\Models\Comment;
 use App\Models\Gallery;
 use Illuminate\Http\Request;
 
@@ -38,8 +39,28 @@ class GalleryService
 
     public function showGallery($id)
     {
-        $gallery = Gallery::with('user')->find($id);
+        $gallery = Gallery::with('user', 'comments')->find($id);
         return $gallery;
+    }
+
+    public function storeComm(Request $request)
+    {
+        $request->validate([
+            'description' => 'required',
+        ]);
+
+        $comment = new Comment();
+        $comment->description = $request->description;
+        $comment->user_id = $request->user_id;
+        $comment->gallery_id = $request->gallery_id;
+        $comment->save();
+
+        return $comment;
+    }
+
+    public function removeComm($id)
+    {
+        Comment::destroy($id);
     }
 
     public function editGallery(Request $request, string $id)

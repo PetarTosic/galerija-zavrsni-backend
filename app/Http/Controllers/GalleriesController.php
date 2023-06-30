@@ -47,6 +47,20 @@ class GalleriesController extends Controller
         return $gallery;
     }
 
+    public function postComment(Request $request)
+    {
+        $gallery = $this->galleryService->storeComm($request);
+
+        return $gallery;
+    }
+
+    public function destroyComment($id)
+    {
+        $gallery = $this->galleryService->removeComm($id);
+
+        return $gallery;
+    }
+
     /**
      * Update the specified resource in storage.
      */

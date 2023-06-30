@@ -35,3 +35,5 @@ Route::post('/galleries', [GalleriesController::class, 'store']);
 Route::get('/galleries/{id}', [GalleriesController::class, 'show']);
 Route::put('/galleries/{id}', [GalleriesController::class, 'update']);
 Route::delete('/galleries/{id}', [GalleriesController::class, 'destroy']);
+Route::post('/galleries/{id}/comments', [GalleriesController::class, 'postComment']);
+Route::delete('/comments/{id}', [GalleriesController::class, 'destroyComment']);
