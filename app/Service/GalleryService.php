@@ -12,10 +12,19 @@ class GalleryService
 
     public function showGalleries(Request $request)
     {
-        $galleries = Gallery::with('user')->paginate(10);
+        $name = $request->input('name');
+
+        $query = Gallery::query();
+
+        if ($name) {
+            $query->searchByName($name);
+        }
+
+        $galleries = $query->with('user')->paginate(10);
 
         return $galleries;
     }
+
 
     public function postGallery(Request $request)
     {
@@ -23,13 +32,14 @@ class GalleryService
             'name' => 'required|min:2|max:255|string',
             'description' => 'max:1000',
             'urls' => 'required|array',
+            'user_id' => 'required|exists:users,id',
         ]);
 
         $gallery = new Gallery();
 
         $gallery->name = $request->name;
         $gallery->description = $request->description;
-        $gallery->urls = implode(',', $request->urls);
+        $gallery->urls = json_encode($request->urls);
         $gallery->user_id = $request->user_id;
 
         $gallery->save();

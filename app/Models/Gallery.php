@@ -18,4 +18,9 @@ class Gallery extends Model
     {
         return $this->hasMany(Comment::class);
     }
+
+    public static function scopeSearchByName($query, $name)
+    {
+        return $query->where('name', 'like', '%' . $name . '%');
+    }
 }
