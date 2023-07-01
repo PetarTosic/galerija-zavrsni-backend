@@ -20,7 +20,7 @@ class GalleryService
             $query->searchByName($name);
         }
 
-        $galleries = $query->with('user')->paginate(10);
+        $galleries = $query->with('user')->orderBy('created_at', 'DESC')->paginate(10);
 
         return $galleries;
     }

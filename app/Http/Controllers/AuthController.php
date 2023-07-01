@@ -44,7 +44,7 @@ class AuthController extends Controller
             ], 404);
         }
 
-        $galleries = $user->gallery;
+        $galleries = $user->gallery()->orderBy('created_at', 'DESC')->get();
 
         return response()->json([
             'status' => 'success',
