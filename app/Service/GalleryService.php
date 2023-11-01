@@ -22,6 +22,11 @@ class GalleryService
 
         $galleries = $query->with('user')->orderBy('created_at', 'DESC')->paginate(10);
 
+        $galleries->getCollection()->transform(function ($gallery) {
+            $gallery->urls = json_decode($gallery->urls, true);
+            return $gallery;
+        });
+        
         return $galleries;
     }
 
@@ -31,7 +36,7 @@ class GalleryService
         $request->validate([
             'name' => 'required|min:2|max:255|string',
             'description' => 'max:1000',
-            'urls' => 'required|array',
+            'urls' => 'required',
             'user_id' => 'required|exists:users,id',
         ]);
 
@@ -40,6 +45,7 @@ class GalleryService
         $gallery->name = $request->name;
         $gallery->description = $request->description;
         $gallery->urls = json_encode($request->urls);
+        // $gallery->urls = $request->urls;
         $gallery->user_id = $request->user_id;
 
         $gallery->save();
@@ -50,6 +56,10 @@ class GalleryService
     public function showGallery($id)
     {
         $gallery = Gallery::with('user', 'comments')->find($id);
+        if($gallery) {
+            $gallery->urls = json_decode($gallery->urls, true); 
+        }
+
         return $gallery;
     }
 
